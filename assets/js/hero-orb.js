@@ -91,7 +91,7 @@ function initOrb(mount, images) {
         new THREE.MeshBasicMaterial({ map: tex, side: THREE.DoubleSide, transparent: true })
       );
       mesh.position.set(x, 0, z);
-      mesh.lookAt(0, 0, 0); // front face points outward
+      mesh.lookAt(x * 2, 0, z * 2); // face outward (mesh +Z points to the lookAt target)
       content.add(mesh);
     });
   });
@@ -102,7 +102,7 @@ function initOrb(mount, images) {
   camera.lookAt(0, 0, 0);
 
   let rotY = 0, vel = 0, dragging = false, lastX = 0;
-  const AUTO = reduce ? 0 : 0.0016;        // continuous auto-spin
+  const AUTO = reduce ? 0 : 0.0006;        // continuous auto-spin (lower = slower)
   const dom = renderer.domElement;
   // touch-action: pan-y (set in CSS) lets the browser keep vertical scroll;
   // horizontal drags come to us as pointer events. We never preventDefault.
