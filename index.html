@@ -20,8 +20,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="assets/css/styles.css">
+
+  <!-- Three.js (ESM) for the hero particle-sphere -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
 </head>
-<body>
+<body class="home">
 
   <!-- Loader -->
   <div class="loader" id="loader">
@@ -69,6 +79,7 @@
 
   <!-- ───────── HERO ───────── -->
   <section class="hero" id="home">
+    <div class="hero-orb" id="hero-orb" aria-hidden="true"></div>
     <div class="hero-in">
       <div class="hero-main">
       <div class="hero-meta reveal">
@@ -104,26 +115,6 @@
         <span><b>100%</b>responsive</span>
       </div>
       </div><!-- /hero-main -->
-
-      <aside class="hero-panel reveal d2" aria-label="Studio status">
-        <div class="hp-top">
-          <span class="hp-status"><span class="hp-dot"></span>Available for work</span>
-          <span class="hp-badge">'26</span>
-        </div>
-        <div class="hp-clock">
-          <span class="hp-time" id="hp-time">--:--</span>
-          <span class="hp-zone">Bangkok · ICT (GMT+7)</span>
-        </div>
-        <ul class="hp-list">
-          <li><span class="hp-n">01</span>Web Design</li>
-          <li><span class="hp-n">02</span>Web Development</li>
-          <li><span class="hp-n">03</span>Full-Site Build</li>
-        </ul>
-        <div class="hp-foot">
-          <span>ตอบกลับใน 24 ชม.</span>
-          <a href="#contact">เริ่มโปรเจค <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
-        </div>
-      </aside>
     </div>
   </section>
 
@@ -266,5 +257,6 @@
 
   <script src="assets/js/projects-data.js"></script>
   <script src="assets/js/main.js"></script>
+  <script type="module" src="assets/js/hero-orb.js"></script>
 </body>
 </html>

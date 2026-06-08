@@ -347,7 +347,12 @@
   function setupNav() {
     const nav = document.getElementById('nav');
     if (!nav) return;
-    const onScroll = () => nav.classList.toggle('is-stuck', window.scrollY > 20);
+    const topbar = document.querySelector('.topbar');
+    const onScroll = () => {
+      const scrolled = window.scrollY > 20;
+      nav.classList.toggle('is-stuck', scrolled);
+      if (topbar) topbar.classList.toggle('is-hidden', scrolled);
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }

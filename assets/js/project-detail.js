@@ -25,7 +25,7 @@
   function shotPaths(p) {
     const n = p.shots || 0;
     const out = [];
-    for (let i = 0; i < n; i++) out.push(`images/projects/${p.gallerySlug}/showcase_${i}.png`);
+    for (let i = 0; i < n; i++) out.push(`images/projects/${p.gallerySlug}/showcase_${i}.webp`);
     if (!out.length && p.thumb) out.push(p.thumb);
     return out;
   }
@@ -68,7 +68,7 @@
     const others = window.projects.filter(x => x.id !== p.id && x.featured).slice(0, 3);
 
     const slides = imgs.map((src, i) =>
-      `<img class="pj-slide${i === 0 ? ' is-active' : ''}" data-i="${i}" src="${src}" alt="${p.title} — ภาพที่ ${i + 1}" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async">`).join('');
+      `<img class="pj-slide" data-i="${i}" src="${src}" alt="${p.title} — ภาพที่ ${i + 1}" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async">`).join('');
     const dots = imgs.map((_, i) =>
       `<button class="pj-dot${i === 0 ? ' is-active' : ''}" type="button" data-i="${i}" aria-label="ไปที่ภาพที่ ${i + 1}"></button>`).join('');
     const thumbs = imgs.map((src, i) =>
@@ -105,7 +105,7 @@
           <button class="pj-nav pj-prev" type="button" data-dir="-1" aria-label="ภาพก่อนหน้า">${ICON.chev}</button>
           <div class="pj-frame">
             ${device === 'mobile' ? '<span class="pj-notch" aria-hidden="true"></span>' : `<span class="pj-bar" aria-hidden="true"><i></i><i></i><i></i><em>${url}</em></span>`}
-            <div class="pj-screen"><div class="pj-slides">${slides}</div></div>
+            <div class="pj-screen"><div class="pj-track">${slides}</div></div>
           </div>
           <button class="pj-nav pj-next" type="button" data-dir="1" aria-label="ภาพถัดไป">${ICON.chev}</button>
         </div>
@@ -207,21 +207,31 @@
       .catch(() => { /* not deployed / offline → keep placeholder number */ });
   }
 
-  /* ───────── showcase carousel ───────── */
+  /* ───────── showcase carousel (sliding track, drag-follow) ───────── */
   function setupShowcase() {
     const root = document.querySelector('.pj-showcase');
     if (!root) return;
+    const screen = root.querySelector('.pj-screen');
+    const track = root.querySelector('.pj-track');
     const slides = Array.from(root.querySelectorAll('.pj-slide'));
     const dots = Array.from(root.querySelectorAll('.pj-dot'));
     const thumbs = Array.from(root.querySelectorAll('.pj-thumb'));
     const total = slides.length;
-    if (total <= 1) { root.querySelectorAll('.pj-nav').forEach(b => b.style.display = 'none'); }
-    if (!total) return;
+    if (!track || !total) return;
+    if (total <= 1) root.querySelectorAll('.pj-nav').forEach(b => b.style.display = 'none');
     let active = 0;
+    const EASE = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
 
+    // a transform-track can't lazy-load (off-screen by layout) → force-load every slide
+    slides.forEach((s) => { s.loading = 'eager'; });
+
+    const setX = (val, animate) => {
+      track.style.transition = animate ? EASE : 'none';
+      track.style.transform = `translate3d(${val}, 0, 0)`;
+    };
     const go = (i) => {
-      active = (i % total + total) % total;
-      slides.forEach((s, k) => s.classList.toggle('is-active', k === active));
+      active = Math.max(0, Math.min(total - 1, i));
+      setX(`${-active * 100}%`, true);
       dots.forEach((d, k) => d.classList.toggle('is-active', k === active));
       thumbs.forEach((t, k) => {
         const on = k === active;
@@ -233,12 +243,46 @@
     root.querySelectorAll('.pj-nav').forEach(b => b.addEventListener('click', () => go(active + Number(b.dataset.dir))));
     dots.forEach(d => d.addEventListener('click', () => go(Number(d.dataset.i))));
     thumbs.forEach(t => t.addEventListener('click', () => go(Number(t.dataset.i))));
-
-    // keyboard arrows when stage focused/hovered
     root.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') go(active - 1);
       else if (e.key === 'ArrowRight') go(active + 1);
     });
+
+    // drag: track follows the pointer live, snaps on release
+    const frame = root.querySelector('.pj-frame');
+    if (frame && total > 1) {
+      let dragging = false, startX = 0, basePx = 0, w = 1, dx = 0;
+      frame.addEventListener('pointerdown', (e) => {
+        e.preventDefault();            // stop native image-drag / text select
+        dragging = true; startX = e.clientX; dx = 0;
+        w = screen.clientWidth || 1;
+        basePx = -active * w;
+        try { frame.setPointerCapture(e.pointerId); } catch (_) {}
+      });
+      frame.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        dx = e.clientX - startX;
+        let offset = basePx + dx;
+        const min = -(total - 1) * w, max = 0;
+        if (offset > max) offset = max + (offset - max) * 0.35;        // rubber-band at start
+        else if (offset < min) offset = min + (offset - min) * 0.35;   // rubber-band at end
+        setX(`${offset}px`, false);
+      });
+      const end = () => {
+        if (!dragging) return;
+        dragging = false;
+        const threshold = Math.min(80, w * 0.18);
+        if (dx <= -threshold) go(active + 1);
+        else if (dx >= threshold) go(active - 1);
+        else go(active); // not far enough → snap back
+      };
+      frame.addEventListener('pointerup', end);
+      frame.addEventListener('pointercancel', end);
+      frame.addEventListener('pointerleave', end);
+    }
+
+    go(0);
+    window.addEventListener('resize', () => setX(`${-active * 100}%`, false), { passive: true });
   }
 
   /* ───────── nav / menu (shared behaviour) ───────── */

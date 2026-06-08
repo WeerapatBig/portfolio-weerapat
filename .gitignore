@@ -15,3 +15,7 @@ node_modules/
 # os junk
 .DS_Store
 Thumbs.db
+
+# local-only tooling (sharp for image conversion)
+package.json
+package-lock.json
