@@ -17,6 +17,8 @@
     renderServices();
     renderProcess();
     setupProcessStepper();
+    renderFAQ();
+    setupFAQ();
     renderContact();
     renderFooterContact();
     renderMenuContact();
@@ -270,6 +272,37 @@
       b.addEventListener('mouseenter', () => show(i));
       b.addEventListener('focus', () => show(i));
       b.addEventListener('click', () => show(i));
+    });
+  }
+
+  /* ───────── FAQ (accordion) ───────── */
+  function renderFAQ() {
+    const host = document.getElementById('faq-list');
+    if (!host || !window.siteConfig || !window.siteConfig.faq) return;
+    host.innerHTML = window.siteConfig.faq.map((f, i) => `
+      <div class="faq-item reveal${i ? ' d1' : ''}">
+        <button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a-${i}">
+          <span>${f.q}</span>
+          <span class="faq-ic" aria-hidden="true"></span>
+        </button>
+        <div class="faq-a" id="faq-a-${i}" role="region"><div class="faq-a-in"><p>${f.a}</p></div></div>
+      </div>`).join('');
+  }
+
+  function setupFAQ() {
+    const host = document.getElementById('faq-list');
+    if (!host) return;
+    const items = Array.from(host.querySelectorAll('.faq-item'));
+    items.forEach((item) => {
+      const btn = item.querySelector('.faq-q');
+      btn.addEventListener('click', () => {
+        const isOpen = item.classList.contains('is-open');
+        items.forEach((o) => {
+          o.classList.remove('is-open');
+          o.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) { item.classList.add('is-open'); btn.setAttribute('aria-expanded', 'true'); }
+      });
     });
   }
 
