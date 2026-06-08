@@ -1,0 +1,17 @@
+# local preview helper
+.preview-server.mjs
+
+# dependencies
+node_modules/
+
+# secrets — NEVER commit these (set them in Netlify dashboard instead)
+.env
+.env.local
+.env.*.local
+
+# netlify local
+.netlify/
+
+# os junk
+.DS_Store
+Thumbs.db

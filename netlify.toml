@@ -1,0 +1,7 @@
+# Netlify config — static site at root + serverless functions for the view counter
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"

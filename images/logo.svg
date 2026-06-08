@@ -1,0 +1,48 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    WB Monogram — Big W. Studio
+    Approximation of brand logo for use until final logo asset is provided.
+    Replace this file with the final logo when ready.
+  -->
+
+  <!-- W letter (Deep Digital Navy #101828) -->
+  <path
+    d="M 20 25
+       L 40 95
+       Q 41 100 46 100
+       Q 51 100 53 95
+       L 70 50
+       L 87 95
+       Q 89 100 94 100
+       Q 99 100 100 95
+       L 115 25"
+    fill="none"
+    stroke="#101828"
+    stroke-width="14"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- B letter (Electric Mint #36F2A5) -->
+  <path
+    d="M 120 25
+       L 120 100
+       M 120 25
+       L 155 25
+       Q 175 25 175 45
+       Q 175 60 158 62
+       L 120 62
+       M 120 62
+       L 160 62
+       Q 180 62 180 80
+       Q 180 100 158 100
+       L 120 100 Z"
+    fill="#36F2A5"
+    stroke="#36F2A5"
+    stroke-width="2"
+    stroke-linejoin="round"
+  />
+
+  <!-- Subtle code bracket detail (top-left) -->
+  <text x="10" y="18" font-family="monospace" font-size="9" fill="#36F2A5" opacity="0.7">&lt;/&gt;</text>
+</svg>
