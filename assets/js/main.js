@@ -22,7 +22,6 @@
     renderContact();
     renderFooterContact();
     renderMenuContact();
-    setupStats();
     setupNav();
     setupMenu();
     startClock();
@@ -206,7 +205,6 @@
             <span class="pcard-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></span>
           </span>
           <span class="pcard-sum">${p.summary}</span>
-          <span class="pcard-tags">${p.tools.map(t => `<span>${t}</span>`).join('')}</span>
         </span>
       </a>`).join('');
   }
@@ -365,27 +363,11 @@
     host.innerHTML = out.join('');
   }
 
-  /* ───────── Stats ───────── */
-  function setupStats() {
-    if (!window.siteConfig) return;
-    const s = window.siteConfig.stats;
-    const map = { 'stat-projects': s.projects, 'stat-years': s.yearsExp, 'stat-clients': s.clients };
-    Object.keys(map).forEach(id => {
-      const el = document.getElementById(id);
-      if (el && map[id] != null) el.textContent = map[id] + '+';
-    });
-  }
-
   /* ───────── Nav ───────── */
   function setupNav() {
     const nav = document.getElementById('nav');
     if (!nav) return;
-    const topbar = document.querySelector('.topbar');
-    const onScroll = () => {
-      const scrolled = window.scrollY > 20;
-      nav.classList.toggle('is-stuck', scrolled);
-      if (topbar) topbar.classList.toggle('is-hidden', scrolled);
-    };
+    const onScroll = () => nav.classList.toggle('is-stuck', window.scrollY > 20);
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
