@@ -32,7 +32,7 @@
   --mono:    "Spline Sans Mono", ui-monospace, monospace;
 
   /* ── Space / layout ── */
-  --edge: clamp(1.25rem, 5vw, 5rem);
+  --edge: clamp(1.6rem, 6vw, 5rem);
   --bay:  clamp(5.5rem, 13vw, 14rem);
   --wrap: 1280px;
 
@@ -178,6 +178,15 @@ h1, h2, h3, h4 { text-wrap: balance; }
   transition: top 0.45s var(--ease);
 }
 .nav.is-stuck { top: clamp(0.5rem, 1.4vw, 0.85rem); }
+/* mobile: nudge header up + a bit larger */
+@media (max-width: 620px) {
+  .nav { top: 0.45rem; }
+  .nav.is-stuck { top: 0.4rem; }
+  .nav-in { padding: 0.7rem 0.85rem 0.7rem 1.05rem; border-radius: 22px; }
+  .brand img { width: 44px; height: 44px; border-radius: 13px; }
+  .brand-text b { font-size: 1.12rem; }
+  .brand-text span { font-size: 0.66rem; }
+}
 /* iOS-style liquid-glass floating capsule */
 .nav-in {
   position: relative;
@@ -319,9 +328,9 @@ h1, h2, h3, h4 { text-wrap: balance; }
 /* content centered, click-through to orb except on links/buttons */
 .hero-in { position: relative; z-index: 2; max-width: 880px; margin-inline: auto; padding-inline: var(--edge); text-align: center; pointer-events: none; }
 .hero-in a, .hero-in button { pointer-events: auto; }
-.hero-main { display: flex; flex-direction: column; align-items: center; margin-bottom: clamp(4.5rem, 10vw, 8.5rem); }
+.hero-main { display: flex; flex-direction: column; align-items: center; margin-bottom: clamp(7rem, 13vw, 12rem); }
 
-.hero-note { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: clamp(1.75rem, 3.5vw, 2.75rem); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--on-dark-70); }
+.hero-note { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: clamp(1.25rem, 2.5vw, 1.75rem); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--on-dark-70); }
 .hero-note-dot { flex-shrink: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--mint); animation: pulse 2.4s var(--ease) infinite; }
 .tag {
   display: inline-flex; align-items: center; gap: 0.5rem;
@@ -339,10 +348,10 @@ h1, h2, h3, h4 { text-wrap: balance; }
 .hero-title {
   font-family: var(--display);
   font-weight: 700;
-  font-size: clamp(2rem, 5.5vw, 4.25rem);
+  font-size: clamp(2.8rem, 5.5vw, 4.25rem);
   line-height: 1.0;
   letter-spacing: -0.04em;
-  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  margin-bottom: clamp(2.5rem, 4.5vw, 3.5rem);
   text-align: center;
 }
 .hero-title .ln { display: block; overflow: hidden; white-space: nowrap; }
@@ -352,7 +361,7 @@ h1, h2, h3, h4 { text-wrap: balance; }
   line-height: 1.55;
   color: var(--on-dark-70);
   max-width: 50ch;
-  margin: 0 auto clamp(1.75rem, 3vw, 2.5rem);
+  margin: 0 auto clamp(2.5rem, 4.5vw, 3.5rem);
 }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: center; }
 .hero .btn-primary { background: var(--mint); color: var(--ink); }
@@ -914,6 +923,21 @@ h1, h2, h3, h4 { text-wrap: balance; }
   transition: transform 0.6s var(--ease);
 }
 #rot-design.rot-on.mark-in::after { transform: scaleX(1); }
+
+/* ── mobile breathing: looser spacing so content doesn't feel packed ── */
+@media (max-width: 640px) {
+  :root { --bay: 6.5rem; }
+  .sec-head { margin-bottom: 3.25rem; gap: 1.25rem; }
+  .hero-main { margin-bottom: 9rem; }
+  .hero-title { margin-bottom: 3.25rem; }
+  .hero-sub { margin-bottom: 3.25rem; }
+  .work-grid { gap: 3rem; }
+  .svc-grid { gap: 1.5rem; }
+  .svc-card { padding: 1.9rem 1.6rem; gap: 1rem; }
+  .about-grid { gap: 3.25rem; }
+  .values { margin-top: 2.5rem; }
+  .contact-top { gap: 2.5rem; margin-bottom: 3rem; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   * , *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
